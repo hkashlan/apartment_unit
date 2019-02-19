@@ -1,0 +1,48 @@
+:host {
+  padding: 1rem;
+  box-sizing: border-box;
+}
+
+.unit-wrapper {
+  border: 1px solid #E9EBEE;
+  border-radius: 5px;
+}
+
+img {
+  width: 100%;
+}
+
+.content-wrapper {
+  padding: 1rem;
+}
+
+.title {
+  color: #477B9E;
+  margin-top: 1rem;
+  margin-bottom: 2rem;
+  font-size: 1.5rem;
+}
+
+.description {
+  font-weight: bold;
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
+}
+
+.features {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.features>div {
+  width: 50%;
+}
+
+.actions {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.actions>button {
+  color: #477B9E;
+}
