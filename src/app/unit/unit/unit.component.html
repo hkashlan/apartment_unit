@@ -1,11 +1,11 @@
-<div class="unit-wrapper">
-  <img src="https://mediaservice-cdn-test.azureedge.net/cost-centers/4017/main/500" />
+<div class="unit-wrapper" (click)="goToDetail()">
+  <img [src]="unitModel.teaserImageUrl" />
   <div class="content-wrapper">
     <div class="title">
-      publications title
+      {{ unitModel.title }}
     </div>
     <div class="description">
-      description
+      {{ getAddress() }}
     </div>
     <div class="features">
       <div>2 rooms</div>

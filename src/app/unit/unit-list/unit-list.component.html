@@ -1,5 +1,5 @@
 <mat-toolbar>
-  <span>Total number</span>
+  <span>Total number {{ (unitService.unitsModel | async).totalElements }} </span>
   <form>
     <mat-form-field>
       <input type="text" placeholder="City" matInput [formControl]="myControl" [matAutocomplete]="auto">
@@ -22,7 +22,9 @@
   </form>
 </mat-toolbar>
 <div class="unit-list">
-  <app-unit>
+  <app-unit [unitModel]="unitModel" *ngFor="let unitModel of unitsList | async ">
+  </app-unit>
+  <!-- <app-unit>
   </app-unit>
   <app-unit>
   </app-unit>
@@ -31,8 +33,6 @@
   <app-unit>
   </app-unit>
   <app-unit>
-  </app-unit>
-  <app-unit>
-  </app-unit>
+  </app-unit> -->
 
 </div>

@@ -13,4 +13,6 @@ mat-toolbar>* {
 
 .unit-list app-unit {
   width: 25%;
+  display: flex;
+  flex-direction: column;
 }
