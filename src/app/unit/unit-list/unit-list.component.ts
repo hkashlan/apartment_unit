@@ -82,31 +82,6 @@ export class UnitListComponent implements OnInit {
         )
       )
     );
-
-    // tt
-
-    // this.filteredOptions = this.cityControl.valueChanges.pipe(
-    //   debounceTime(100),
-    //   distinctUntilChanged(),
-    //   startWith(''),
-    //   map(value => value.toLowerCase()),
-    //   mergeMap(value =>
-    //     this.unitService.unitsModel.pipe(
-    //       map(unitsModel => of(unitsModel.data)),
-    //       mergeAll(),
-    //       flatMap(unit => unit),
-    //       groupBy(unit => unit.address.city.toLowerCase().trim()),
-    //       // tap(d => console.log(d.key)),
-    //       map(group => group.key),
-    //       filter(city => city.toLowerCase().includes(value)),
-    //       zip()
-    //       // tap(d => console.log('1' + d))
-    //       // zip()
-    //       // concatAll()
-    //     )
-    //   )
-    // );
-    // tt.subscribe(data => console.log(data));
   }
 
   private _filter(data: UnitModel[], value: string, key: string): string[] {
