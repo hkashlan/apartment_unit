@@ -1,6 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router, ParamMap } from '@angular/router';
-import { switchMap } from 'rxjs/operators';
+import { switchMap, map, filter, flatMap, first } from 'rxjs/operators';
+import { UnitModel } from '../shared/unit.model';
+import { UnitService } from '../shared/unit.service';
+import { of, from, Observable } from 'rxjs';
 
 @Component({
   selector: 'app-unit-detail',
@@ -8,14 +11,25 @@ import { switchMap } from 'rxjs/operators';
   styleUrls: ['./unit-detail.component.css']
 })
 export class UnitDetailComponent implements OnInit {
-  constructor(private route: ActivatedRoute, private router: Router) {
-    // this.route.paramMap.pipe(
-    //   switchMap((params: ParamMap) => {
-    //     // this.service.getHero(params.get('id')))
-    //     console.log('1');
-    //   })
-    // );
-  }
+  unit: Observable<UnitModel>;
 
-  ngOnInit() {}
+  constructor(
+    private route: ActivatedRoute,
+    private router: Router,
+    private unitService: UnitService
+  ) {}
+
+  ngOnInit() {
+    this.unit = this.route.paramMap.pipe(
+      map(params => params.get('id')),
+      switchMap(id =>
+        this.unitService.unitsModel.pipe(
+          map(unitsModel => from(unitsModel.data)),
+          flatMap(units => units),
+          filter(unit => unit.id === id),
+          first()
+        )
+      )
+    );
+  }
 }

@@ -30,8 +30,6 @@ export class UnitService {
               this.unitsModel.next(result.data.unitsData);
               observer.next(result.data.unitsData);
               observer.complete();
-              // this.serverName = result.data.serverData.name;
-              // this.cacheServerName = this.serverName;
             }
           })
         )

@@ -2,9 +2,9 @@
   <span>Total number {{ (unitService.unitsModel | async).totalElements }} </span>
   <form>
     <mat-form-field>
-      <input type="text" placeholder="City" matInput [formControl]="myControl" [matAutocomplete]="auto">
-      <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete">
-        <mat-option *ngFor="let option of filteredOptions | async" [value]="option">
+      <input type="text" placeholder="City" matInput [formControl]="cityControl" [matAutocomplete]="cityAuto">
+      <mat-autocomplete autoActiveFirstOption #cityAuto="matAutocomplete">
+        <mat-option *ngFor="let option of cityOptions | async" [value]="option">
           {{option}}
         </mat-option>
       </mat-autocomplete>
@@ -12,9 +12,9 @@
   </form>
   <form>
     <mat-form-field>
-      <input type="text" placeholder="Neighborhood" matInput [formControl]="myControl" [matAutocomplete]="auto">
-      <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete">
-        <mat-option *ngFor="let option of filteredOptions | async" [value]="option">
+      <input type="text" placeholder="Neighborhood" matInput [formControl]="neighborhoodControl" [matAutocomplete]="neighborhoodAuto">
+      <mat-autocomplete autoActiveFirstOption #neighborhoodAuto="matAutocomplete">
+        <mat-option *ngFor="let option of neighborhoodOptions | async" [value]="option">
           {{option}}
         </mat-option>
       </mat-autocomplete>
@@ -22,17 +22,10 @@
   </form>
 </mat-toolbar>
 <div class="unit-list">
-  <app-unit [unitModel]="unitModel" *ngFor="let unitModel of unitsList | async ">
+  <!-- <a *ngFor="let unitModel of unitsList | async" routerLink="/detail/{{unitModel.id}}">
+    <app-unit [unitModel]="unitModel" (click)="goTo(unitModel)">
+    </app-unit>
+  </a> -->
+  <app-unit [unitModel]="unitModel" *ngFor="let unitModel of unitsList | async " (click)="goTo(unitModel)">
   </app-unit>
-  <!-- <app-unit>
-  </app-unit>
-  <app-unit>
-  </app-unit>
-  <app-unit>
-  </app-unit>
-  <app-unit>
-  </app-unit>
-  <app-unit>
-  </app-unit> -->
-
 </div>
