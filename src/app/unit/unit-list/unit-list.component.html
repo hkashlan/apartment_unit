@@ -22,10 +22,6 @@
   </form>
 </mat-toolbar>
 <div class="unit-list">
-  <!-- <a *ngFor="let unitModel of unitsList | async" routerLink="/detail/{{unitModel.id}}">
-    <app-unit [unitModel]="unitModel" (click)="goTo(unitModel)">
-    </app-unit>
-  </a> -->
-  <app-unit [unitModel]="unitModel" *ngFor="let unitModel of unitsList | async " (click)="goTo(unitModel)">
+  <app-unit [unitModel]="unitModel" *ngFor="let unitModel of unitsList | async " routerLink="/detail/{{unitModel.id}}">
   </app-unit>
 </div>

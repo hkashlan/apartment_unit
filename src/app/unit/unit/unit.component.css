@@ -19,7 +19,6 @@ img {
 .content-wrapper {
   padding: 1rem;
   flex: 1;
-  /* border: 1px solid; */
   display: flex;
   flex-direction: column;
 }

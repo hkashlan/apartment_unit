@@ -16,7 +16,3 @@ mat-toolbar>* {
   display: flex;
   flex-direction: column;
 }
-
-app-unit {
-  cursor: pointer;
-}

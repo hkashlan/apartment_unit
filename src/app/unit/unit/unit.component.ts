@@ -13,10 +13,6 @@ export class UnitComponent implements OnInit {
 
   ngOnInit() {}
 
-  goToDetail() {
-    console.log('hi');
-  }
-
   getAddress() {
     const address = this.unitModel.address;
     return `${address.streetName}

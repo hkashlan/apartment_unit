@@ -1,11 +1,15 @@
-<div class="unit-wrapper" (click)="goToDetail()">
+<div class="unit-wrapper">
   <img [src]="unitModel.teaserImageUrl" />
   <div class="content-wrapper">
     <div class="title">
       {{ unitModel.title }}
     </div>
     <div class="description">
-      {{ getAddress() }}
+      {{ unitModel.address.streetName }}
+      {{ unitModel.address.houseNumber }}
+      {{ unitModel.address.postalCode }}
+      {{ unitModel.address.city }}
+      {{ unitModel.address.neighborhood }}
     </div>
     <div class="features">
       <div>2 rooms</div>

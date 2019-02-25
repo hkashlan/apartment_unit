@@ -1,32 +1,16 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
-import { Observable, pipe, of } from 'rxjs';
+import { Observable, merge } from 'rxjs';
 import {
   startWith,
   map,
   debounceTime,
-  switchMap,
-  filter,
-  flatMap,
-  groupBy,
-  toArray,
   mergeMap,
-  combineLatest,
-  catchError,
   distinctUntilChanged,
-  mergeAll,
-  tap,
-  merge,
-  combineAll,
-  zip,
-  concat,
-  concatAll
 } from 'rxjs/operators';
 import { UnitService } from '../shared/unit.service';
 import { UnitsModel } from '../shared/units.model';
 import { UnitModel } from '../shared/unit.model';
-import { from } from 'zen-observable';
-import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-unit-list',
@@ -42,43 +26,30 @@ export class UnitListComponent implements OnInit {
   unitsModel: Observable<UnitsModel>;
   unitsList: Observable<UnitModel[]>;
 
-  constructor(public unitService: UnitService, private router: Router) {}
+  constructor(public unitService: UnitService) {}
 
   ngOnInit() {
-    this.neighborhoodOptions = this.neighborhoodControl.valueChanges.pipe(
-      debounceTime(100),
-      distinctUntilChanged(),
-      startWith(''),
-      map(value => value.toLowerCase()),
-      mergeMap(value =>
+    this.neighborhoodOptions = this.createStream(this.neighborhoodControl, 'neighborhood');
+
+    this.cityOptions = this.createStream(this.cityControl, 'city');
+
+    this.unitsList = merge(this.cityOptions, this.neighborhoodOptions).pipe(
+      mergeMap(() =>
         this.unitService.unitsModel.pipe(
-          map(unitsModel => unitsModel.data),
-          map(data => this._filter(data, value, 'neighborhood')),
-          tap(d => console.log(d))
+          map(units => this._filterUnits(units.data))
         )
       )
     );
+  }
 
-    this.cityOptions = this.cityControl.valueChanges.pipe(
+  private createStream(control: FormControl, property: string) {
+    return control.valueChanges.pipe(
+      startWith(''),
       debounceTime(100),
       distinctUntilChanged(),
-      startWith(''),
-      map(value => value.toLowerCase()),
       mergeMap(value =>
         this.unitService.unitsModel.pipe(
-          map(unitsModel => unitsModel.data),
-          map(data => this._filter(data, value, 'city')),
-          tap(d => console.log(d))
-        )
-      )
-    );
-
-    this.unitsList = this.cityOptions.pipe(
-      merge(this.neighborhoodOptions),
-      mergeMap(value1 =>
-        this.unitService.unitsModel.pipe(
-          map(value => value.data),
-          map(unit => this._filterUnits(unit))
+          map(unitsModel => this._filter(unitsModel.data, value, property)),
         )
       )
     );
@@ -87,27 +58,22 @@ export class UnitListComponent implements OnInit {
   private _filter(data: UnitModel[], value: string, key: string): string[] {
     const filterValue = value.toLowerCase();
 
-    let cities = data.map(unit => unit.address[key]);
-    cities = cities.filter((v, i) => v && cities.indexOf(v) === i);
-    return cities
-      .filter(city => city.toLowerCase().includes(filterValue))
+    let keyValues = data.map(unit => unit.address[key]);
+    keyValues = keyValues.filter((v, i) => v && keyValues.indexOf(v) === i);
+    return keyValues
+      .filter(element => element.toLowerCase().includes(filterValue))
       .sort();
   }
 
   private _filterUnits(data: UnitModel[]): UnitModel[] {
     return data.filter(
       unit =>
-        unit.address.city
-          .toLowerCase()
-          .includes(this.cityControl.value.toLowerCase()) &&
-        unit.address.neighborhood &&
-        unit.address.neighborhood
-          .toLowerCase()
-          .includes(this.neighborhoodControl.value.toLowerCase())
+        this.includes(this.cityControl.value, unit.address.city) &&
+        this.includes(this.neighborhoodControl.value, unit.address.neighborhood)
     );
   }
 
-  goTo(unitModel: UnitModel) {
-    this.router.navigate([`/detail/${unitModel.id}`]);
+  private includes(val1: string, val2: string) {
+    return val2 && val2.toLowerCase().includes(val1.toLowerCase());
   }
 }

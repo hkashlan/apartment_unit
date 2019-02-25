@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router, ParamMap } from '@angular/router';
-import { switchMap, map, filter, flatMap, first } from 'rxjs/operators';
+import { ActivatedRoute } from '@angular/router';
+import { switchMap, map } from 'rxjs/operators';
 import { UnitModel } from '../shared/unit.model';
 import { UnitService } from '../shared/unit.service';
-import { of, from, Observable } from 'rxjs';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-unit-detail',
@@ -15,7 +15,6 @@ export class UnitDetailComponent implements OnInit {
 
   constructor(
     private route: ActivatedRoute,
-    private router: Router,
     private unitService: UnitService
   ) {}
 
@@ -24,10 +23,8 @@ export class UnitDetailComponent implements OnInit {
       map(params => params.get('id')),
       switchMap(id =>
         this.unitService.unitsModel.pipe(
-          map(unitsModel => from(unitsModel.data)),
-          flatMap(units => units),
-          filter(unit => unit.id === id),
-          first()
+          map(unitsModel => unitsModel.data),
+          map(units => units.find(unit => unit.id === id)),
         )
       )
     );
